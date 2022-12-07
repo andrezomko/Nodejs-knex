@@ -1,0 +1,34 @@
+# Query: nome
+# ContextLines: 1
+
+12 results - 2 files
+
+src/controllers/NotesController.js:
+  41          const note = await knex("notes").where({id}).first()
+  42: // selecionando as tags quando o note_id for igual ao id parameter,ordenado alfabeticamente pelo nome:
+  43          const tags =  await knex("tags").where({note_id : id}).orderBy("name")
+
+src/controllers/UsersController.js:
+  10      async create(request, response){
+  11:         const {nome, email,senha} = request.body
+  12  
+
+  20  
+  21:          await database.run("INSERT INTO users (name, email, password ) VALUES (?,?,?)",[nome,email,hashedPassword])
+  22           return response.status(201).json('Usuario criado com sucesso') 
+
+  26     async update (request,response){
+  27:         const {nome,email,password,oldPassword} = request.body //desestruturando
+  28          const {id} = request.params  //desestruturando
+
+  44      //  substituindo os valores na tabela: 
+  45:         user.name = nome ?? user.name //se tiver conteudo no nome uso ele, se nao, usarei o  user.nome, q ja esta presente no banco
+  46          user.email= email ?? user.email
+
+  65          await database.run(`UPDATE users SET 
+  66:         name = ? ,
+  67          email = ? ,
+
+  69          updated_at = DATETIME('now') WHERE id = ? ` ,
+  70:         [user.name,user.email,user.password , id])
+  71  

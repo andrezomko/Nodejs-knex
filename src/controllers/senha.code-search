@@ -1,0 +1,38 @@
+# Query: senha
+# ContextLines: 1
+
+17 results - 1 file
+
+src/controllers/UsersController.js:
+  10      async create(request, response){
+  11:         const {nome, email,senha} = request.body
+  12  
+
+  18          }
+  19:         const hashedPassword =  await hash(senha,8) //2
+  20  
+  21:          await database.run("INSERT INTO users (nome, email, password) VALUES (?,?,?)",[nome,email,hashedPassword])
+  22           return response.status(201).json('Usuario criado com sucesso') 
+
+  47      
+  48: //    ---     Verificacoes Senha--- 
+  49: //     verficando se digitou a senha antiga tambem:
+  50      if(password && !oldPassword){
+  51:         throw new AppError("você precisa informar a senha antiga para definir a nova senha")
+  52      }   
+  53: //  oldPassword ->  REQ  user.senha -> DB
+  54: //   Esta colocando a senha antiga correta?    
+  55      if(password && oldPassword ){//se os dois foram informados
+  56:         const checkOldPassword = await compare(oldPassword, user.password) //comparando a senha antiga com a senha do banco ambas criptografadas
+  57          if(!checkOldPassword){
+  58:             throw new AppError('senha antiga nao confere!')
+  59           }
+  60:          //atualizando a senha
+  61:          user.password = await hash(password,8)
+  62      }
+
+  67          email = ? ,
+  68:         senha = ?,
+  69          updated_at = DATETIME('now') WHERE id = ? ` ,
+  70:         [user.nome,user.email,user.password , id])
+  71  
